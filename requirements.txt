@@ -1,0 +1,8 @@
+numpy
+pandas
+seaborn
+matplotlib
+pickle-mixin
+scikit-learn
+flask
+nltk

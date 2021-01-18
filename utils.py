@@ -22,7 +22,9 @@ def predict_result(sentence):
     sentence = text_preprocess(sentence)
     with open('pickle_files/lrmodel.pkl','rb') as mp:
         model = pickle.load(mp)
-    return model.predict([sentence])
-
+    result = model.predict([sentence])[0]
+    if result == 1:
+        return "positive"
+    return "negative"
 
 print(predict_result(text_preprocess("My brother is sad")))

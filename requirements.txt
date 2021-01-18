@@ -6,3 +6,5 @@ pickle-mixin
 scikit-learn
 flask
 nltk
+tweepy
+python-dotenv

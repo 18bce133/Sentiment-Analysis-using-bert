@@ -45,7 +45,7 @@ h1{
 
 p{
     text-align: center;
-    font-size: 20px;
+    font-size: 30px;
 }
 
 img {
@@ -54,6 +54,11 @@ img {
     display: block;
     margin-left: auto;
     margin-right: auto;
+}
+
+tp{
+    padding-top: 30px;
+    padding-bottom: 30px;
 }
 
 

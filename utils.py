@@ -7,6 +7,10 @@ import seaborn as sns
 import string
 from nltk.stem.porter import *
 import pickle
+from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
+from flair.models import TextClassifier
+from flair.data import Sentence
+import numpy as np
 
 def text_preprocess(sentence):
     sentence = sentence.replace("[^a-zA-Z#]", " ")
@@ -28,3 +32,22 @@ def predict_result(sentence):
     return "negative"
 
 print(predict_result(text_preprocess("My brother is sad")))
+
+from textblob import TextBlob
+
+def text_sentiment(text):
+    testimonial = TextBlob(text)
+    return int(testimonial.sentiment.polarity>0.5)
+    
+
+analyzer = SentimentIntensityAnalyzer()
+def text_sentiment_vader(text):
+ vs = analyzer.polarity_scores(text)
+ return int(vs.get("compound")>0)
+ 
+ 
+classifier = TextClassifier.load('en-sentiment')
+def text_sentiment_flair(text):
+  sentence = Sentence(text)
+  classifier.predict(sentence)
+  return np.round(sentence.labels[0].score)

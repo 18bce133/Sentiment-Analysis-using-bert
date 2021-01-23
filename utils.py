@@ -1,16 +1,8 @@
-import re
-from nltk.util import pr
-import pandas as pd 
-import numpy as np 
-import matplotlib.pyplot as plt 
-import seaborn as sns
-import string
-from nltk.stem.porter import *
+from nltk.stem.porter import PorterStemmer
 import pickle
 from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 from flair.models import TextClassifier
 from flair.data import Sentence
-import numpy as np
 
 def text_preprocess(sentence):
     sentence = sentence.replace("[^a-zA-Z#]", " ")
@@ -22,32 +14,29 @@ def text_preprocess(sentence):
     sentence = " ".join(map(str,sentence))
     return sentence
 
-def predict_result(sentence):
+def logistic_regression(sentence):
     sentence = text_preprocess(sentence)
     with open('pickle_files/lrmodel.pkl','rb') as mp:
         model = pickle.load(mp)
-    result = model.predict([sentence])[0]
-    if result == 1:
-        return "positive"
-    return "negative"
-
-print(predict_result(text_preprocess("My brother is sad")))
-
-from textblob import TextBlob
-
-def text_sentiment(text):
-    testimonial = TextBlob(text)
-    return int(testimonial.sentiment.polarity>0.5)
+    result = model.predict_proba([sentence])[0][1]
+    return int(result*100)
     
-
-analyzer = SentimentIntensityAnalyzer()
 def text_sentiment_vader(text):
- vs = analyzer.polarity_scores(text)
- return int(vs.get("compound")>0)
+    analyzer = SentimentIntensityAnalyzer()
+    vs = analyzer.polarity_scores(text)
+    if vs['pos'] > 0:
+        return int(max(vs['neu'],vs['pos'])*100)
+    return int((1-max(vs['neu'],vs['neg']))*100)
  
- 
-classifier = TextClassifier.load('en-sentiment')
 def text_sentiment_flair(text):
-  sentence = Sentence(text)
-  classifier.predict(sentence)
-  return np.round(sentence.labels[0].score)
+    classifier = TextClassifier.load('en-sentiment')
+    sentence = Sentence(text)
+    classifier.predict(sentence)
+    return int(sentence.labels[0].score*100)
+
+def retrieve_result(sentence):
+    ans={}
+    ans['Logistic regression']=logistic_regression(sentence)
+    ans['Vader Analyzer']=text_sentiment_vader(sentence)
+    ans['Flar Analyzer']=text_sentiment_flair(sentence)
+    return ans

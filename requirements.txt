@@ -8,6 +8,5 @@ flask
 nltk
 tweepy
 python-dotenv
-textblob
 vaderSentiment
 flair

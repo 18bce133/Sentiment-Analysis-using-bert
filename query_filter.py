@@ -3,7 +3,7 @@ import re
 import tweepy
 from tweepy import OAuthHandler
 from dotenv import load_dotenv
-from utils import predict_result
+from utils import logistic_regression
 load_dotenv("api.env")
 
 class TwitterClient(object):
@@ -46,7 +46,7 @@ class TwitterClient(object):
                 # saving text of tweet
                 parsed_tweet['text'] = tweet.text
                 # saving sentiment of tweet
-                parsed_tweet['sentiment'] = predict_result(tweet.text)
+                parsed_tweet['sentiment'] = logistic_regression(tweet.text)
 
                 # appending parsed tweet to tweets list
                 if tweet.retweet_count > 0:

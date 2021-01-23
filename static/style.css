@@ -9,8 +9,6 @@ body {
 
 .loginContainer {
     background-color: rgba(0,0,0,.75);
-    padding-top: 60px;
-    padding-bottom: 60px;
     padding-left: 68px;
     padding-right: 68px;
     border-radius: 4px;
@@ -55,10 +53,3 @@ img {
     margin-left: auto;
     margin-right: auto;
 }
-
-tp{
-    padding-top: 30px;
-    padding-bottom: 30px;
-}
-
-

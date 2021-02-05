@@ -1,8 +1,8 @@
 from nltk.stem.porter import PorterStemmer
 import pickle
 from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
-from flair.models import TextClassifier
-from flair.data import Sentence
+from transformers import BertTokenizer, TFBertForSequenceClassification
+import tensorflow as tf
 
 def text_preprocess(sentence):
     sentence = sentence.replace("[^a-zA-Z#]", " ")
@@ -28,15 +28,19 @@ def text_sentiment_vader(text):
         return int(max(vs['neu'],vs['pos'])*100)
     return int((1-max(vs['neu'],vs['neg']))*100)
  
-def text_sentiment_flair(text):
-    classifier = TextClassifier.load('en-sentiment')
-    sentence = Sentence(text)
-    classifier.predict(sentence)
-    return int(sentence.labels[0].score*100)
+def bert_result(sentence):
+    model = TFBertForSequenceClassification.from_pretrained("bert-base-uncased")
+    tokenizer = BertTokenizer.from_pretrained("bert-base-uncased")
+    model.load_weights("ckpt_files/senti_weights.ckpt")
+    tf_batch = tokenizer(sentence, max_length=128, padding=True, truncation=True, return_tensors='tf')
+    tf_outputs = model(tf_batch)
+    tf_predictions = tf.nn.softmax(tf_outputs[0], axis=-1)
+    label = tf_predictions.numpy()
+    return int(label[0][1]*100)
 
 def retrieve_result(sentence):
     ans={}
     ans['Logistic regression']=logistic_regression(sentence)
     ans['Vader Analyzer']=text_sentiment_vader(sentence)
-    ans['Flar Analyzer']=text_sentiment_flair(sentence)
+    ans['Bert Result']=bert_result(sentence)
     return ans

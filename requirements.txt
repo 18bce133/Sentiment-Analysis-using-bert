@@ -10,3 +10,6 @@ tweepy
 python-dotenv
 vaderSentiment
 flair
+transformers
+tensorflow
+keras

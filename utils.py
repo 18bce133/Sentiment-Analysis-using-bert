@@ -3,6 +3,14 @@ import pickle
 from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 from transformers import BertTokenizer, TFBertForSequenceClassification
 import tensorflow as tf
+import os
+import requests
+import gdown
+
+if not os.path.isfile('senti_weights.ckpt.data-00000-of-00001'):
+    url = 'https://drive.google.com/u/1/uc?id=1me5NIopunCdZ8TEjVrUEB2ZbBDGjhVe7&export=download'
+    output = 'senti_weights.ckpt.data-00000-of-00001'
+    gdown.download(url, output, quiet=False)
 
 def text_preprocess(sentence):
     sentence = sentence.replace("[^a-zA-Z#]", " ")
@@ -31,7 +39,7 @@ def text_sentiment_vader(text):
 def bert_result(sentence):
     model = TFBertForSequenceClassification.from_pretrained("bert-base-uncased")
     tokenizer = BertTokenizer.from_pretrained("bert-base-uncased")
-    model.load_weights("ckpt_files/senti_weights.ckpt")
+    model.load_weights("senti_weights.ckpt")
     tf_batch = tokenizer(sentence, max_length=128, padding=True, truncation=True, return_tensors='tf')
     tf_outputs = model(tf_batch)
     tf_predictions = tf.nn.softmax(tf_outputs[0], axis=-1)

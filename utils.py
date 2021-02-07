@@ -7,10 +7,10 @@ import os
 import requests
 import gdown
 
-if not os.path.isfile('senti_weights.ckpt.data-00000-of-00001'):
+"""if not os.path.isfile('senti_weights.ckpt.data-00000-of-00001'):
     url = 'https://drive.google.com/u/1/uc?id=1me5NIopunCdZ8TEjVrUEB2ZbBDGjhVe7&export=download'
     output = 'senti_weights.ckpt.data-00000-of-00001'
-    gdown.download(url, output, quiet=False)
+    gdown.download(url, output, quiet=False)"""
 
 def text_preprocess(sentence):
     sentence = sentence.replace("[^a-zA-Z#]", " ")
@@ -50,5 +50,5 @@ def retrieve_result(sentence):
     ans={}
     ans['Logistic regression']=logistic_regression(sentence)
     ans['Vader Analyzer']=text_sentiment_vader(sentence)
-    ans['Bert Result']=bert_result(sentence)
+    ans['Bert Result']=50
     return ans

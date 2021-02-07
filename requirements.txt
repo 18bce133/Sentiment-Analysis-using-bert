@@ -1,10 +1,12 @@
-numpy
-pickle-mixin
-flask
-scikit-learn
 nltk
+pandas
+pickle-mixin
+scikit-learn
+flask
 tweepy
 python-dotenv
 vaderSentiment
+tensorflow-cpu
 transformers==3.5.1
-tensorflow==2.4.1
+gdrive
+gunicorn

@@ -9,4 +9,5 @@ vaderSentiment
 tensorflow-cpu
 transformers==3.5.1
 gdrive
+gdown
 gunicorn

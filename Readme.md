@@ -28,4 +28,7 @@ To use on local machine :-
   <li>git clone https://github.com/18bce133/Sentiment-Analysis-using-bert.git</li>
   <li>pip install -r requirements.txt</li>
   <li>python app.py</li>
+  <li>In browser type http://127.0.0.1:5000/</li>
   </ul>
+
+Note :- First startup might took time becuase it wil downlaod trained model from cloud of size of 1.05gb approx.

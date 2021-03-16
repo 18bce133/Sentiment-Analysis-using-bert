@@ -25,7 +25,7 @@ Libraries used :-
 
 To use on local machine :- 
 <ul>
-  <li><git clone https://github.com/18bce133/Sentiment-Analysis-using-bert.git</li>
+  <li>git clone https://github.com/18bce133/Sentiment-Analysis-using-bert.git</li>
   <li>pip install -r requirements.txt</li>
   <li>python app.py</li>
   </ul>

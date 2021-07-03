@@ -3,7 +3,7 @@ import re
 import tweepy
 from tweepy import OAuthHandler
 from dotenv import load_dotenv
-from utils import logistic_regression
+from utils import logistic_regression,bert_result
 load_dotenv("api.env")
 
 class TwitterClient(object):
@@ -27,7 +27,7 @@ class TwitterClient(object):
         '''
         return ' '.join(re.sub("(@[A-Za-z0-9]+)|([^0-9A-Za-z \t])|(\w+:\/\/\S+)", " ", tweet).split())
 
-    def get_tweets(self, query, count=10):
+    def get_tweets(self, query, count=2,ap=True):
         ''' 
         Main function to fetch tweets and parse them. 
         '''
@@ -46,7 +46,14 @@ class TwitterClient(object):
                 # saving text of tweet
                 parsed_tweet['text'] = tweet.text
                 # saving sentiment of tweet
-                parsed_tweet['sentiment'] = logistic_regression(tweet.text)
+                if ap==False:
+                    tp = bert_result(tweet.text)
+                    if tp>=50:
+                        parsed_tweet['sentiment'] = 'positive'
+                    else:
+                        parsed_tweet['sentiment'] = 'negative'
+                else:
+                    parsed_tweet['sentiment'] = logistic_regression(tweet.text)
 
                 # appending parsed tweet to tweets list
                 if tweet.retweet_count > 0:
